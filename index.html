@@ -13,7 +13,7 @@ button,input,textarea,select{font:inherit}button{cursor:pointer}.hidden{display:
 .brand{font-weight:800;font-size:20px;color:var(--primary)}.brand small{display:block;color:var(--muted);font-size:11px;font-weight:500}
 .container{max-width:1180px;margin:auto;padding:24px 16px}.hero{padding:30px 0 12px}.hero h1{font-size:32px;margin:0 0 8px}.hero p{color:var(--muted);margin:0;line-height:1.6}
 .card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px}
-.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}.auth-card{width:min(440px,100%)}.tabs{display:flex;gap:8px;margin-bottom:18px}.tab{flex:1;padding:11px;border:1px solid var(--border);background:#fff;border-radius:10px}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;position:relative;overflow:hidden;background-size:cover;background-position:center;background-repeat:no-repeat}.auth-wrap::before{content:"";position:absolute;inset:0;background:rgba(15,23,42,.52);z-index:0}.auth-wrap>*{position:relative;z-index:1}.auth-card{width:min(440px,100%);backdrop-filter:blur(8px);background:rgba(255,255,255,.96)}.tabs{display:flex;gap:8px;margin-bottom:18px}.auth-subtabs{margin-top:2px}.auth-subtabs .tab{font-weight:700}.tab{flex:1;padding:11px;border:1px solid var(--border);background:#fff;border-radius:10px}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 label{display:block;font-weight:650;font-size:13px;margin:12px 0 6px}input,textarea,select{width:100%;border:1px solid #d6dbe5;border-radius:10px;padding:11px 12px;background:#fff;color:var(--text);outline:none}input:focus,textarea:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}textarea{min-height:100px;resize:vertical}
 .btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700}.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary2)}.btn-light{background:#eef2ff;color:#1e40af}.btn-danger{background:#fee2e2;color:#991b1b}.btn-outline{background:#fff;border:1px solid var(--border)}
 .row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -25,7 +25,7 @@ label{display:block;font-weight:650;font-size:13px;margin:12px 0 6px}input,texta
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.section-title{margin:26px 0 12px}.section-title h2{margin:0 0 4px}.section-title p{margin:0;color:var(--muted);font-size:13px}
 .notice{padding:12px 14px;border-radius:10px;background:#eff6ff;color:#1e40af;margin:10px 0;font-size:13px}.error{background:#fef2f2;color:#991b1b}.success{background:#f0fdf4;color:#166534}
 .modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:grid;place-items:center;padding:16px;z-index:20}.modal-box{width:min(650px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:16px;padding:20px}
-.announcement{border-left:4px solid var(--primary);padding:12px 14px;background:#f8fafc;border-radius:8px}.poster{width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin:10px 0;border:1px solid var(--border)}.announcement h3{margin:0 0 5px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #cbd5e1;border-radius:14px}
+.dashboard-header{position:relative;height:180px;border-radius:18px;overflow:hidden;margin:6px 0 22px;background:#e2e8f0}.dashboard-header img{width:100%;height:100%;object-fit:cover}.header-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;padding:22px;background:linear-gradient(transparent,rgba(15,23,42,.72));color:#fff}.header-overlay h1{margin:0;font-size:28px}.announcement{border-left:4px solid var(--primary);padding:12px 14px;background:#f8fafc;border-radius:8px}.poster{width:100%;max-height:360px;object-fit:cover;border-radius:12px;margin:10px 0;border:1px solid var(--border)}.announcement h3{margin:0 0 5px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #cbd5e1;border-radius:14px}
 footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
 </style>
 </head>
@@ -40,9 +40,9 @@ footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
       <button type="button" class="tab" id="adminMode">Admin</button>
     </div>
     <div id="setupStatus" class="notice hidden"></div>
-    <div class="tabs" id="authSubTabs">
+    <div class="tabs auth-subtabs" id="authSubTabs">
       <button type="button" class="tab active" id="loginTab">Login</button>
-      <button type="button" class="tab" id="signupTab">Create account</button>
+      <button type="button" class="tab" id="signupTab">Create Account</button>
     </div>
     <form id="authForm">
       <div id="nameField" class="hidden"><label>Full name</label><input id="name" type="text" autocomplete="name"></div>
@@ -53,6 +53,11 @@ footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
         <label>Semester</label>
         <select id="semester"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
         <label>Skills / interests</label><input id="skills" placeholder="Python, Java, Web Development">
+      </div>
+      <div id="adminCreateNote" class="notice hidden">Admin account creation is available here. The account remains pending until an existing administrator approves it.</div>
+      <div id="adminFields" class="hidden">
+        <label>Department / Role</label><input id="adminDepartment" placeholder="Placement Cell, CSE Department, etc.">
+        <div class="notice">Admin account creation sends a request for approval. An existing administrator must approve it before the account can access the Admin Desk.</div>
       </div>
       <button class="btn btn-primary" style="width:100%;margin-top:16px" id="authBtn">Login</button>
     </form>
@@ -73,6 +78,10 @@ footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
     </div>
 
     <div id="studentView">
+      <div id="studentHeader" class="dashboard-header">
+        <img id="studentHeaderImage" class="hidden" alt="Student section header">
+        <div class="header-overlay"><h1>Student Desk</h1></div>
+      </div>
       <div class="stats">
         <div class="stat"><strong id="statAll">0</strong><span>Opportunities</span></div>
         <div class="stat"><strong id="statSaved">0</strong><span>Saved</span></div>
@@ -99,7 +108,23 @@ footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
     </div>
 
     <div id="adminView" class="hidden">
-      <div class="section-title"><h2>Admin Desk</h2><p>Create announcements and publish new opportunities.</p></div>
+      <div id="adminHeader" class="dashboard-header">
+        <img id="adminHeaderImage" class="hidden" alt="Admin section header">
+        <div class="header-overlay"><h1>Admin Desk</h1></div>
+      </div>
+      <div class="section-title"><h2>Admin Desk</h2><p>Create announcements, publish opportunities, manage admin requests and customize the portal.</p></div>
+      <div class="card" style="margin-bottom:16px">
+        <h3>Portal appearance</h3>
+        <p class="muted">Upload the images used on the login page and the Student/Admin sections.</p>
+        <form id="appearanceForm">
+          <label>Login page background image</label><input id="loginBgImage" type="file" accept="image/*">
+          <label>Student section header image</label><input id="studentHeaderUpload" type="file" accept="image/*">
+          <label>Admin section header image</label><input id="adminHeaderUpload" type="file" accept="image/*">
+          <button class="btn btn-primary" type="submit">Save appearance</button>
+          <div id="appearanceMsg"></div>
+        </form>
+      </div>
+      <div id="adminRequests"></div>
       <div class="grid grid-2">
         <div class="card">
           <h3>Make announcement</h3>
@@ -143,7 +168,7 @@ footer{text-align:center;padding:30px;color:var(--muted);font-size:12px}
 </div>
 
 <script>
-const SUPABASE_URL ="https://tyeefarmdtozqqafqzht.supabase.co";
+const SUPABASE_URL = "https://tyeefarmdtozqqafqzht.supabase.co";
 const SUPABASE_KEY = "sb_publishable_5EGyh9P82mzpTs9sgJ8Nvw_FmQdsBM2";
 let db=null;
 function initSupabase(){
@@ -160,7 +185,7 @@ function initSupabase(){
   return true;
 }
 
-let currentUser=null,currentProfile=null,allOpportunities=[],savedIds=new Set(),savedAnnouncementIds=new Set(),applied=[];
+let currentUser=null,currentProfile=null,allOpportunities=[],savedIds=new Set(),savedAnnouncementIds=new Set(),applied=[],siteSettings={};
 const $=id=>document.getElementById(id);
 function msg(text,type="notice",target="authMsg"){const el=$(target);if(el)el.innerHTML=text?`<div class="notice ${type}">${escapeHtml(text)}</div>`:"";}
 function escapeHtml(v=""){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
@@ -176,32 +201,61 @@ async function uploadPoster(file){
   const {data}=db.storage.from("posters").getPublicUrl(path);
   return data.publicUrl;
 }
-let authRole="student";
+
+async function uploadSiteImage(file){
+  if(!file) return null;
+  if(!file.type.startsWith("image/")) throw new Error("Please select an image file.");
+  if(file.size > 8 * 1024 * 1024) throw new Error("Please keep the image below 8 MB.");
+  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+  const path=`site/${currentUser.id}/${crypto.randomUUID()}.${ext}`;
+  const {error}=await db.storage.from("posters").upload(path,file,{contentType:file.type,cacheControl:"3600",upsert:false});
+  if(error) throw error;
+  return db.storage.from("posters").getPublicUrl(path).data.publicUrl;
+}
+async function loadSiteSettings(){
+  const {data,error}=await db.from("site_settings").select("*").eq("id",1).maybeSingle();
+  if(!error && data){
+    siteSettings=data;
+    applySiteSettings();
+  }
+}
+function applySiteSettings(){
+  if(siteSettings.login_background_url){
+    $("authView").style.backgroundImage=`url("${siteSettings.login_background_url}")`;
+  }
+  if(siteSettings.student_header_url){
+    $("studentHeaderImage").src=siteSettings.student_header_url;
+    $("studentHeaderImage").classList.remove("hidden");
+  }
+  if(siteSettings.admin_header_url){
+    $("adminHeaderImage").src=siteSettings.admin_header_url;
+    $("adminHeaderImage").classList.remove("hidden");
+  }
+}
+let authRole="student",authMode="login";
 function setRole(role){
   authRole=role;
   const student=role==="student";
   $("studentMode").classList.toggle("active",student);
   $("adminMode").classList.toggle("active",!student);
-  $("signupTab").classList.toggle("hidden",!student);
-  $("authSubTabs").classList.toggle("hidden",!student);
-  if(!student){
-    setAuthMode("login");
-    $("authTitle").textContent="Admin Login";
-    $("authBtn").textContent="Admin Login";
-    $("nameField").classList.add("hidden");
-    $("profileFields").classList.add("hidden");
-  }else{
-    setAuthMode("login");
-  }
+  $("authSubTabs").classList.remove("hidden");
+  $("loginTab").classList.remove("hidden");
+  $("signupTab").classList.remove("hidden");
+  setAuthMode("login");
 }
 function setAuthMode(mode){
+  authMode=mode;
   const login=mode==="login";
-  $("authTitle").textContent=authRole==="admin"?"Admin Login":(login?"Student Login":"Create Student Account");
-  $("authBtn").textContent=authRole==="admin"?"Admin Login":(login?"Login":"Create account");
+  const student=authRole==="student";
+  $("authTitle").textContent=student?(login?"Student Login":"Create Student Account"):(login?"Admin Login":"Create Admin Account");
+  $("authBtn").textContent=student?(login?"Login":"Create student account"):(login?"Admin Login":"Create admin account");
   $("loginTab").classList.toggle("active",login);
   $("signupTab").classList.toggle("active",!login);
-  $("nameField").classList.toggle("hidden",login||authRole==="admin");
-  $("profileFields").classList.toggle("hidden",login||authRole==="admin");
+  $("nameField").classList.toggle("hidden",login);
+  $("profileFields").classList.toggle("hidden",!(student&&!login));
+  $("adminFields").classList.toggle("hidden",!(authRole==="admin"&&!login));
+  const adminNote=$("adminCreateNote");
+  if(adminNote) adminNote.classList.toggle("hidden",!(authRole==="admin"&&!login));
 }
 $("studentMode").onclick=()=>setRole("student");
 $("adminMode").onclick=()=>setRole("admin");
@@ -214,39 +268,44 @@ $("authForm").onsubmit=async e=>{
   msg("");
   const email=$("email").value.trim(),password=$("password").value;
   try{
-    if(authRole==="admin"){
+    if(authMode==="login"){
       const {data,error}=await db.auth.signInWithPassword({email,password});
       if(error) throw error;
       const {data:profile,error:profileError}=await db.from("profiles").select("role,full_name").eq("id",data.user.id).single();
       if(profileError) throw profileError;
-      if(profile.role!=="admin"){
+      if(authRole==="admin" && profile.role!=="admin"){
         await db.auth.signOut();
-        throw new Error("This account is not an administrator account.");
+        throw new Error("This account is not an approved administrator account yet.");
       }
-      await startApp(data.user);
-    }else if($("profileFields").classList.contains("hidden")){
-      const {data,error}=await db.auth.signInWithPassword({email,password});
-      if(error) throw error;
-      const {data:profile,error:profileError}=await db.from("profiles").select("role").eq("id",data.user.id).single();
-      if(profileError) throw profileError;
-      if(profile.role==="admin"){
+      if(authRole==="student" && profile.role==="admin"){
         await db.auth.signOut();
         throw new Error("This is an admin account. Please choose Admin Login.");
       }
       await startApp(data.user);
-    }else{
+    }else if(authRole==="student"){
       const name=$("name").value.trim(),branch=$("branch").value.trim(),semester=$("semester").value,skills=$("skills").value.trim();
+      if(!name) throw new Error("Please enter your full name.");
       const {data,error}=await db.auth.signUp({email,password,options:{data:{full_name:name,branch,semester,skills}}});
       if(error) throw error;
       if(data.session) await startApp(data.user);
-      else msg("Account created. Check your email to confirm your account, then log in.","success");
+      else msg("Student account created. Check your email to confirm your account, then log in.","success");
+    }else{
+      const name=$("name").value.trim(),department=$("adminDepartment").value.trim();
+      if(!name) throw new Error("Please enter your full name.");
+      const {data,error}=await db.auth.signUp({email,password,options:{data:{full_name:name,admin_department:department,admin_requested:true}}});
+      if(error) throw error;
+      if(data.session){
+        await db.from("profiles").update({admin_requested:true}).eq("id",data.user.id);
+        await db.auth.signOut();
+      }
+      msg("Admin account created as a pending request. Confirm your email if required. An existing administrator must approve it before you can use Admin Login.","success");
     }
   }catch(error){msg(error.message||"Authentication failed.","error");}
   finally{$("authBtn").disabled=false;}
 };
 $("logoutBtn").onclick=async()=>{await db.auth.signOut();location.reload();};
 
-async function startApp(user){currentUser=user;const{data:profile,error}=await db.from("profiles").select("*").eq("id",user.id).single();if(error){msg("Profile could not be loaded: "+error.message,"error");return;}currentProfile=profile;$("authView").classList.add("hidden");$("appView").classList.remove("hidden");$("userLabel").textContent=profile.full_name||user.email;$("welcomeTitle").textContent=`Welcome, ${profile.full_name||"Student"}`;$("studentView").classList.toggle("hidden",profile.role==="admin");$("adminView").classList.toggle("hidden",profile.role!=="admin");if(profile.role==="admin")await loadAdmin();else await loadStudent();}
+async function startApp(user){currentUser=user;await loadSiteSettings();const{data:profile,error}=await db.from("profiles").select("*").eq("id",user.id).single();if(error){msg("Profile could not be loaded: "+error.message,"error");return;}currentProfile=profile;$("authView").classList.add("hidden");$("appView").classList.remove("hidden");$("userLabel").textContent=profile.full_name||user.email;$("welcomeTitle").textContent=`Welcome, ${profile.full_name||"Student"}`;$("studentView").classList.toggle("hidden",profile.role==="admin");$("adminView").classList.toggle("hidden",profile.role!=="admin");if(profile.role==="admin")await loadAdmin();else await loadStudent();}
 
 async function loadStudent(){
   const[op,anns,saves,annSaves,apps]=await Promise.all([
@@ -331,15 +390,50 @@ $("opportunityForm").onsubmit=async e=>{
   }catch(error){alert(error.message||"Could not publish opportunity.");}
 };
 
-async function loadAdmin(){const[op,ann]=await Promise.all([db.from("opportunities").select("*").order("created_at",{ascending:false}),db.from("announcements").select("*").order("created_at",{ascending:false})]);if(op.error||ann.error){$("adminPosts").innerHTML=`<div class="notice error">${escapeHtml(op.error?.message||ann.error?.message)}</div>`;return}$("adminPosts").innerHTML=`<div class="card"><h3>Opportunities (${op.data.length})</h3>${op.data.length?op.data.map(o=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span><b>${escapeHtml(o.title)}</b><small class="muted"> • ${escapeHtml(o.type)}</small></span><button class="btn btn-danger" onclick="deleteOpportunity('${o.id}')">Delete</button></div>`).join(""):"<p class='muted'>No posts.</p>"}</div><div class="card"><h3>Announcements (${ann.data.length})</h3>${ann.data.length?ann.data.map(a=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span><b>${escapeHtml(a.title)}</b></span><button class="btn btn-danger" onclick="deleteAnnouncement('${a.id}')">Delete</button></div>`).join(""):"<p class='muted'>No announcements.</p>"}</div>`;}
+async function loadAdmin(){
+  const[op,ann,requests]=await Promise.all([
+    db.from("opportunities").select("*").order("created_at",{ascending:false}),
+    db.from("announcements").select("*").order("created_at",{ascending:false}),
+    db.from("profiles").select("id,full_name,branch,semester,role,admin_requested,created_at").eq("admin_requested",true).eq("role","student").order("created_at",{ascending:false})
+  ]);
+  if(op.error||ann.error){$("adminPosts").innerHTML=`<div class="notice error">${escapeHtml(op.error?.message||ann.error?.message)}</div>`;return;}
+  const reqs=requests.error?[]:(requests.data||[]);
+  $("adminRequests").innerHTML=reqs.length?`<div class="card" style="margin-bottom:16px"><h3>Pending admin requests (${reqs.length})</h3>${reqs.map(r=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--border);gap:10px"><span><b>${escapeHtml(r.full_name||"Unnamed")}</b><small class="muted"> • ${escapeHtml(r.branch||"")} • ${escapeHtml(r.semester||"")}</small></span><button class="btn btn-primary" onclick="approveAdmin('${r.id}')">Approve admin</button></div>`).join("")}</div>`:"";
+  $("adminPosts").innerHTML=`<div class="card"><h3>Opportunities (${op.data.length})</h3>${op.data.length?op.data.map(o=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span><b>${escapeHtml(o.title)}</b><small class="muted"> • ${escapeHtml(o.type)}</small></span><button class="btn btn-danger" onclick="deleteOpportunity('${o.id}')">Delete</button></div>`).join(""):"<p class='muted'>No posts.</p>"}</div><div class="card"><h3>Announcements (${ann.data.length})</h3>${ann.data.length?ann.data.map(a=>`<div class="row between" style="padding:10px 0;border-bottom:1px solid var(--border)"><span><b>${escapeHtml(a.title)}</b></span><button class="btn btn-danger" onclick="deleteAnnouncement('${a.id}')">Delete</button></div>`).join(""):"<p class='muted'>No announcements.</p>"}</div>`;
+}
+window.approveAdmin=async id=>{
+  if(!confirm("Approve this account as an administrator?")) return;
+  const{error}=await db.from("profiles").update({role:"admin",admin_requested:false}).eq("id",id);
+  if(error) alert(error.message); else {alert("Administrator approved.");await loadAdmin();}
+};
+
 window.deleteOpportunity=async id=>{if(!confirm("Delete this opportunity?"))return;const{error}=await db.from("opportunities").delete().eq("id",id);if(error)alert(error.message);else await loadAdmin();};
 window.deleteAnnouncement=async id=>{if(!confirm("Delete this announcement?"))return;const{error}=await db.from("announcements").delete().eq("id",id);if(error)alert(error.message);else await loadAdmin();};
 
+$("appearanceForm").onsubmit=async e=>{
+  e.preventDefault();
+  try{
+    const updates={};
+    if($("loginBgImage").files[0]) updates.login_background_url=await uploadSiteImage($("loginBgImage").files[0]);
+    if($("studentHeaderUpload").files[0]) updates.student_header_url=await uploadSiteImage($("studentHeaderUpload").files[0]);
+    if($("adminHeaderUpload").files[0]) updates.admin_header_url=await uploadSiteImage($("adminHeaderUpload").files[0]);
+    if(!Object.keys(updates).length) throw new Error("Choose at least one image.");
+    updates.id=1; updates.updated_by=currentUser.id; updates.updated_at=new Date().toISOString();
+    const{data,error}=await db.from("site_settings").upsert(updates,{onConflict:"id"}).select().single();
+    if(error) throw error;
+    siteSettings=data; applySiteSettings();
+    $("appearanceForm").reset();
+    msg("Appearance updated successfully.","success","appearanceMsg");
+  }catch(error){msg(error.message||"Could not update appearance.","error","appearanceMsg");}
+};
+
 async function boot(){
   if(!initSupabase()) return;
+  await loadSiteSettings();
   const {data:{session}}=await db.auth.getSession();
   if(session) await startApp(session.user);
 }
+setRole("student");
 if(initSupabase()){
   db.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT")location.reload();});
 }
